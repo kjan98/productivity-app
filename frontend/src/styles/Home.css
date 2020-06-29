@@ -1,0 +1,16 @@
+.calendar-button {
+    padding: 0px;
+    border-width: 0px;
+    background: white;
+    /*width: 32px;*/
+}
+
+.calendar-button:hover {
+    background-color: lightgray;
+}
+
+.post_it {
+    border: black 1px solid;
+    background:#f4f4efff;
+}
+

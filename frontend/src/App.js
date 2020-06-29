@@ -1,7 +1,8 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 // import { Header, Dummy, Provided } from "./components"
-import { Header, Dummy, Provided } from "./components"
+import { Header, Projects, Home, TimeTrends } from "./components"
+// import "./styles/App.css"
 
 function App() {
   return (
@@ -9,8 +10,9 @@ function App() {
         <Router>
           <Header />
           <Switch>
-            <Route path='/' exact component={() => <Provided />} />
-            <Route path ='/Dummy' exact component={() => <Dummy />} />
+            <Route path='/' exact component={() => <Home />} />
+            <Route path = '/time-trends' exact component={() => <TimeTrends />} />
+            <Route path ='/projects' exact component={() => <Projects />} />
           </Switch>
         </Router>
       </div>

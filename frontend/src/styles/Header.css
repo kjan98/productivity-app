@@ -1,0 +1,15 @@
+header {
+    background-color: #20232aff;
+    height: 60px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.active {
+    color: #56bf98;
+}
+
+a {
+    color: #f4f4ef;
+}
