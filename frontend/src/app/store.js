@@ -7,6 +7,6 @@ export default configureStore({
   reducer: {
     counter: counterReducer,
     todos: todoReducer,
-    task: taskReducer
+    // task: taskReducer
   },
 });

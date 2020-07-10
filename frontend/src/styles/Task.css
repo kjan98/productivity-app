@@ -1,8 +1,23 @@
+.task {
+    cursor: pointer;
+    color: magenta;
+}
+
+.strikethrough {
+    color: #aa0011 !important;
+    text-decoration: line-through;
+}
+
+
 .foo {
     color: magenta;
 }
 
-.button {
+.time_elapsed {
+    color: black;
+}
+
+.buttons {
     box-sizing: border-box;
     height: 15px;
     border-color: transparent transparent transparent black;
@@ -26,14 +41,15 @@
 }
 
 .paused {
-       border-style: double;
+    border-style: double;
     border-width: 0px 0 0px 12px;
 }
 
 .button:hover {
-            border-color: transparent transparent transparent #404040;
+    border-color: transparent transparent transparent #404040;
 
 }
+
 .button.play {
     /*box-sizing: border-box;*/
     /*width: 75px;*/
@@ -55,3 +71,5 @@
     border-width: 0px 0px 0px 37px;
     border-color: black;
 }
+
+

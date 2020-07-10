@@ -19,9 +19,14 @@ from rest_framework import routers
 from prod import views
 
 router = routers.DefaultRouter()
-router.register(r'tasks', views.TaskView, 'prod')
+router.register(r'tasks', views.TaskView)
+# router2 = routers.DefaultRouter()
+router.register(r'time', views.TimeView)
+router.register(r'current', views.CurrentView)
+router.register(r'archive', views.ArchiveView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    # path('api/', include(router2.urls))
 ]
