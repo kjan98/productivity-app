@@ -9,10 +9,11 @@ import {TASK_URL, TIME_URL} from "../constants"
 // import Modal from "./Modal"
 import { Modal, Button } from 'react-bootstrap'
 // import 'bootstrap/dist/css/bootstrap-grid.min.css'
-import Calendar from "./Calendar"
+import Calendar from 'react-calendar'
 
 import calendar from '../images/calendar.png';
 import '../styles/Home.css';
+import 'react-calendar/dist/Calendar.css';
 
 function Home() {
     const data = useSelector(allData);
@@ -66,9 +67,7 @@ function Home() {
 
     return (
         <div className="container-fluid d-flex flex-column align-items-center">
-            {/*<img className='d-flex justify-content-end align-items-end' src={calendar} alt='calendar-icon' />*/}
-            {/*{console.log(data)}*/}
-            <div className='header container-fluid d-flex flex-row justify-content-between align-items-start'>
+            <div className='pt-2 header container-fluid d-flex flex-row justify-content-between align-items-start'>
                 <div className='filler'></div>
                 <h1 className="row"> {moment().format('MMMM D, YYYY')} </h1>
                 {/*<input type='image' src={calendar} className='row'/>*/}
@@ -84,10 +83,10 @@ function Home() {
                 <div className="chart "> THIS IS CHART</div>
                 <Modal show={calendarAppear} onHide={toggleModal} className='modal fade right' >
                     <Modal.Header closeButton>
-                        <Modal.Title>THIS IS A POPUP</Modal.Title>
+                        {/*<Modal.Title></Modal.Title>*/}
                     </Modal.Header>
                     <Modal.Body>
-                        <Calendar/>
+                        <Calendar calendarType='US'/>
                     </Modal.Body>
                 </Modal>
             </div>
