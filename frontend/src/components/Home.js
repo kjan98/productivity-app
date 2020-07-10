@@ -6,7 +6,10 @@ import {add, load, clear, allData, loadTime, selectTime} from "../slices/todoSli
 import Task from "./Task";
 import {selectCount} from "../features/counter/counterSlice";
 import {TASK_URL, TIME_URL} from "../constants"
-import Modal from "./Modal"
+// import Modal from "./Modal"
+import { Modal, Button } from 'react-bootstrap'
+// import 'bootstrap/dist/css/bootstrap-grid.min.css'
+import Calendar from "./Calendar"
 
 import calendar from '../images/calendar.png';
 import '../styles/Home.css';
@@ -50,8 +53,13 @@ function Home() {
         dispatch(loadTtime());
     }
 
-    const toggleModal = () => {
+    const toggleModal = (e) => {
+        console.log("here");
+        // console.log(props);
+        // console.log(e.currentTarget.value)
+        // console.log(e.value);
         setCalendarAppear(!calendarAppear);
+        // console.log(calendarAppear);
     }
 
 
@@ -64,9 +72,9 @@ function Home() {
                 <div className='filler'></div>
                 <h1 className="row"> {moment().format('MMMM D, YYYY')} </h1>
                 {/*<input type='image' src={calendar} className='row'/>*/}
-                <button type='button' className='row calendar-button btn btn-link' onClick={toggleModal}><img src={calendar}
-                                                                                                          alt='calendar-icon'/>
-                </button>
+                <Button type='button' className='row calendar-button btn btn-link' onClick={toggleModal} value='exampleModal' >
+                    <img src={calendar} alt='calendar-icon'/>
+                </Button>
             </div>
             <div className="container-fluid d-flex flex-row justify-content-between">
                 <div className="post_it_container justify-content-end">
@@ -74,7 +82,14 @@ function Home() {
                     <p> + New Note </p>
                 </div>
                 <div className="chart "> THIS IS CHART</div>
-                <Modal show={calendarAppear} />
+                <Modal show={calendarAppear} onHide={toggleModal} className='modal fade right' >
+                    <Modal.Header closeButton>
+                        <Modal.Title>THIS IS A POPUP</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Calendar/>
+                    </Modal.Body>
+                </Modal>
             </div>
         </div>
     );

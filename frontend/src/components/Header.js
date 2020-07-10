@@ -8,12 +8,12 @@ function Header(props) {
     return (
         <header className='d-flex justify-content-end' >
             <Link to='/' className='flex-grow-1 row'><img src={Logo} alt='website logo' className='img-fluid'/></Link>
-            <nav className='navbar-nav d-flex justify-content-end align-items-center row'>
-                <Link className={`nav-item mx-3 ${props.location.pathname === '/' ? "active" : ""}`} to='/'>Home</Link>
+            <nav className=' d-flex justify-content-end align-items-center row flex-row'>
+                <Link className={` mx-3 ${props.location.pathname === '/' ? "active" : ""}`} to='/'>Home</Link>
                 {/*<Prompt message='foo1'/>*/}
-                <Link className={`nav-item mx-3 ${props.location.pathname === '/time-trends' ? "active" : ""}`} to='/time-trends'>Time Trends</Link>
+                <Link className={` mx-3 ${props.location.pathname === '/time-trends' ? "active" : ""}`} to='/time-trends'>Time Trends</Link>
                 {/*<Prompt message='foo2'/>*/}
-                <Link className={`nav-item mx-3 ${props.location.pathname === '/projects' ? "active" : ""}`} to='/projects'>Projects</Link>
+                <Link className={`mx-3 ${props.location.pathname === '/projects' ? "active" : ""}`} to='/projects'>Projects</Link>
             </nav>
         </header>
 

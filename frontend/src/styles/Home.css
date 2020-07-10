@@ -14,3 +14,6 @@
     background:#f4f4efff;
 }
 
+.modal-header {
+    border-bottom: 0 none;
+}

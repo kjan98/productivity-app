@@ -6,10 +6,33 @@ header {
     margin-right: auto;
 }
 
-.active {
-    color: #56bf98;
-}
-
 a {
     color: #f4f4ef;
 }
+a:hover{
+    color: #f4f4ef;
+    text-decoration: none;
+}
+
+.active {
+    color: #56bf98;
+    text-decoration: underline;
+}
+.active:hover{
+    color: #56bf98;
+    text-decoration: underline;
+}
+
+
+
+
+/*a {*/
+/*    color: inherit;*/
+/*}*/
+
+/*a:hover {*/
+/*    text-decoration: none;*/
+/*    color: #f4f4ef;*/
+/*    background-color: transparent !important;*/
+/*}*/
+

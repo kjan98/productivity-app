@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
 import {selectInProgress, selectTime, selectCompleted, start, pause, stop, update, loadTime} from "../slices/todoSlice";
 import {TASK_URL, TIME_URL} from "../constants";
+import {Button} from "react-bootstrap";
 import todos from '../styles/Task.css'
 
 export function Task(props) {
@@ -113,8 +114,8 @@ export function Task(props) {
             </span>
 
             <span className='time_elapsed'>{countdown_time}</span>
-            <button className='button' value={time_option} onClick={toggle}>{time_option}</button>
-            <button className='button' value='stop' onClick={toggle}>{'\u25A0'}</button>
+            <Button variant='outline-secondary' value={time_option} onClick={toggle}>{time_option}</Button>
+            <Button variant='outline-secondary' value='stop' onClick={toggle}>{'\u25A0'}</Button>
 
         </div>
     )
