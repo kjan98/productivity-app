@@ -9,7 +9,7 @@ class ProjectAdmin(admin.ModelAdmin):
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'task', 'completed', 'projectName', 'projectColor')
+    list_display = ('id', 'task', 'completed', 'projectName', 'project_id')
 
 
 

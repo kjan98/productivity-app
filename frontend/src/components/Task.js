@@ -14,7 +14,9 @@ export function Task(props) {
     const task = props.task_object.task;
     const done = props.task_object.completed;
     const projectName = props.task_object.projectName;
+    const project_id = props.task_object.project_id;
     const projectColor = props.task_object.projectColor;
+    // console.log(projectColor);
 
     const writeCompleted = (task_id, val) => {
         console.log('write completed');
@@ -22,7 +24,7 @@ export function Task(props) {
             'task': task,
             'completed': val,
             'projectName': projectName,
-            'projectColor': projectColor
+            'project_id': project_id
         };
         console.log(action);
         axios.put(TASK_URL + task_id + '/', action)
@@ -46,19 +48,27 @@ export function Task(props) {
             'timerStart': time[task_id].timerStart,
             'timerTime': time[task_id].timerTime
         }
-        if (time.hasOwnProperty(task_id)) {
-            axios.put(TIME_URL + task_id + '/', action)
-                .then((response) => {
-                    console.log('success for save values');
-                    console.log(response)
-                })
-                .catch((err) => console.log(err))
-
-        } else {
-            axios.post(TIME_URL + task_id + '/', action)
-                .then(response => console.log(response))
-                .catch(err => console.log(err))
-        }
+        console.log(action);
+        axios.put(TIME_URL + task_id + '/', action)
+            .then((response) => {
+                console.log('success for save values');
+                console.log(response)
+            })
+            .catch(err => {
+                if (err.response.status === 404) {
+                    console.log('in catch, error 404');
+                    // console.log(action);
+                    axios.post(TIME_URL, action)
+                        .then(response => {console.log('success in 404 reroute'); console.log(response)})
+                        .catch(err2 => {
+                            console.log('error in 404 reroute');
+                            console.log(err2)
+                        })
+                } else {
+                    console.log('not a 404 error');
+                    console.log(err)
+                }
+            })
     };
 
     const toggle = (e) => {
@@ -117,7 +127,7 @@ export function Task(props) {
     return (
         <div className='foo'>
             <span className={`${done ? 'strikethrough' : ''}`}>
-                <span className='task' onClick={toggle}>{task}</span>
+                <span className='task' style={{color: projectColor}} onClick={toggle}>{task}</span>
             </span>
 
             <span className='time_elapsed'>{countdown_time}</span>

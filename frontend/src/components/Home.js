@@ -34,7 +34,7 @@ function Home() {
                     let combined = [];
                     task_res.data.forEach(d => {
                         let t = {...d}
-                        t['projectColor'] = color_res.data[t.projectColor-1].color;
+                        t['projectColor'] = color_res.data[t.project_id-1].color;
                         combined.push(t);
                     })
                     dispatch(load(combined))

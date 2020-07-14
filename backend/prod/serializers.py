@@ -12,7 +12,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('id', 'task', 'completed', 'projectName', 'projectColor')
+        fields = ('id', 'task', 'completed', 'projectName', 'project_id')
 
 class TimeSerializer(serializers.ModelSerializer):
     class Meta:

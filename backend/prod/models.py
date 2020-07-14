@@ -13,14 +13,17 @@ class Task(models.Model):
     task = models.CharField(max_length=120)
     completed = models.BooleanField(default=False)
     projectName = models.CharField(max_length=120, blank=True)
-    projectColor = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_color')
+    project_id = models.IntegerField(null=True)
+
+    # project_id = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_color')
 
     def _str_(self):
         return self.task
 
 
 class Time(models.Model):
-    task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    # task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task_id = models.IntegerField(null=False)
     timerStart = models.IntegerField(default=0)
     timerTime = models.IntegerField(default=0)
     inProgress = models.BooleanField(default=False)
