@@ -13,15 +13,19 @@ export function Task(props) {
     const task_id = props.task_object.id;
     const task = props.task_object.task;
     const done = props.task_object.completed;
-    const project = props.task_object.project;
+    const projectName = props.task_object.projectName;
+    const projectColor = props.task_object.projectColor;
 
     const writeCompleted = (task_id, val) => {
         console.log('write completed');
-        axios.put(TASK_URL + task_id + '/', {
+        let action = {
             'task': task,
             'completed': val,
-            'project': project
-        })
+            'projectName': projectName,
+            'projectColor': projectColor
+        };
+        console.log(action);
+        axios.put(TASK_URL + task_id + '/', action)
             .then(response => {
                 console.log('success for write ocmpleted');
                 console.log(response)
@@ -36,15 +40,18 @@ export function Task(props) {
     const saveValues = (interval) => {
         console.log('saveValues');
         let action = {
-                'task_id': task_id,
-                'inProgress': false,
-                'timerTimer': interval,
-                'timerStart': time[task_id].timerStart,
-                'timerTime': time[task_id].timerTime
-            }
+            'task_id': task_id,
+            'inProgress': false,
+            'timerTimer': interval,
+            'timerStart': time[task_id].timerStart,
+            'timerTime': time[task_id].timerTime
+        }
         if (time.hasOwnProperty(task_id)) {
-            axios.put(TIME_URL + task_id + '/', action )
-                .then((response) => {console.log('success for save values');console.log(response)})
+            axios.put(TIME_URL + task_id + '/', action)
+                .then((response) => {
+                    console.log('success for save values');
+                    console.log(response)
+                })
                 .catch((err) => console.log(err))
 
         } else {
@@ -76,14 +83,14 @@ export function Task(props) {
 
         } else if (e.target.value === '\u0965') { //pause
             let interval = clearInterval(time[task_id].ttimer);
-            dispatch(pause({id: task_id, inProgress: false, ttimer: interval}));
-            //save time progress to db
+            //save time progress to db; write to db first so can ensure post/put correctness
             saveValues(interval)
+            dispatch(pause({id: task_id, inProgress: false, ttimer: interval}));
 
         } else { //stop
             let interval = clearInterval(time[task_id].ttimer);
-            dispatch(stop({id: task_id, inProgress: false, ttimer: interval}));
             saveValues(interval);
+            dispatch(stop({id: task_id, inProgress: false, ttimer: interval}));
             writeCompleted(task_id, true);
         }
     }
