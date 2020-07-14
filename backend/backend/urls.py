@@ -24,6 +24,7 @@ router.register(r'tasks', views.TaskView)
 router.register(r'time', views.TimeView)
 router.register(r'current', views.CurrentView)
 router.register(r'archive', views.ArchiveView)
+router.register(r'project', views.ProjectView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
