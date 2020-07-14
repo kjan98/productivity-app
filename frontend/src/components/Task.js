@@ -16,7 +16,6 @@ export function Task(props) {
     const projectName = props.task_object.projectName;
     const project_id = props.task_object.project_id;
     const projectColor = props.task_object.projectColor;
-    // console.log(projectColor);
 
     const writeCompleted = (task_id, val) => {
         console.log('write completed');
@@ -48,7 +47,6 @@ export function Task(props) {
             'timerStart': time[task_id].timerStart,
             'timerTime': time[task_id].timerTime
         }
-        // console.log(action);
         axios.put(TIME_URL + task_id + '/', action)
             .then((response) => {
                 console.log('success for save values');
@@ -110,6 +108,7 @@ export function Task(props) {
             console.log('in else');
         //  1.   mark task as not completed 2. update db
             dispatch(updateCompleted({id: task_id, completed: false }))
+            writeCompleted(task_id, !done);
         }
     }
 
