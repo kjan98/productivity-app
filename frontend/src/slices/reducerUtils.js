@@ -1,5 +1,5 @@
 export function updateCompletedAttribute(state, action) {
-    console.log('in utils');
+    console.log('in update completed');
     let tmp = [...state.data];
     let idx = state.data.findIndex(el => el.id === action.payload.id);
     tmp[idx] = {...tmp[idx], completed: action.payload.completed}

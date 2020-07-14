@@ -32,44 +32,25 @@ function Home() {
             ])
                 .then(axios.spread((task_res, color_res) => {
                     let combined = [];
+                    let colors = {}
+                    color_res.data.forEach(x => {
+                        let colors_tmp = {};
+                        colors_tmp['color']  = x.color;
+                        colors_tmp['hex_color'] = x.hex_color;
+                        colors[x.id] = colors_tmp;
+                    });
                     task_res.data.forEach(d => {
                         let t = {...d}
-                        t['projectColor'] = color_res.data[t.project_id-1].color;
+                        t['projectColor'] = colors[t.project_id].hex_color;
                         combined.push(t);
                     })
-                    dispatch(load(combined))
+                    dispatch(load(combined));
+                    dispatch(loadColors(colors));
                 }))
-                .catch(err => {console.log('failed loadData'); console.log(err)})
-
-            // axios.get(TASK_URL)
-            //     .then(task_res => {
-                    // console.log('loaddata');
-                    // axios.get(PROJECT_URL)
-                    //     .then(color_res => {
-                    //         let tmp = [...task_res.data];
-                    //         console.log(tmp);
-                    //         console.log('in second axios get');
-                    //         console.log(color_res.data);
-                    //         const newArr = tmp.map(d => {
-                    //             let t = {...d};
-                    //             // console.log(color_res.data[t.projectColor-1].color);
-                    //             d['projectColor'] = color_res.data[d.projectColor-1].color;
-                    //             // console.log(t)
-                    //
-                    //         })
-                    //         console.log(newArr);
-                    //
-                    //         // tmp.forEach(d => {...d, d.projectColor = color_res.data[d.projectColor-1])};
-                    //     })
-            //         dispatch(load(task_res.data))
-            //     })
-            //     .catch(err => console.log(err));
-            //
-            // axios.get(PROJECT_URL)
-            //     .then(res => {
-            //         dispatch(loadColors(res.data.map(d => d.color)));
-            //     })
-            //     .catch( err => {console.log('failed in grabbing colors'); console.log(err)})
+                .catch(err => {
+                    console.log('failed loadData');
+                    console.log(err)
+                })
         }
     }
 
@@ -101,9 +82,15 @@ function Home() {
         } else if (e.target.name === 'project') {
             console.log('here');
             // console.log(e.target.value);
-            console.log(e.selectedOptions)
-            setNewProjectName(e.target.value.name);
-            setNewProjectColor(e.target.value.color);
+            // console.log(e.selectedOptions)
+            console.log(e.target.value);
+            // if (e.target.value === '') ? let [pName, pColor] =
+
+            // let [pName, pColor];
+            let [pName, pColor] = e.target.value.split(" ");
+
+            setNewProjectName(pName);
+            setNewProjectColor(pColor);
         }
     }
 
@@ -149,10 +136,9 @@ function Home() {
                         <Form inline onSubmit={handleSubmit}>
                             <Form.Control type='text' name='newTask' placeholder='New Task'
                                           onChange={handleChange} value={newTask}></Form.Control>
-                            <Form.Control as='select' name='project' onChange={handleChange}
-                                          >
-                                <option>select an option</option>
-                                <option value={`{color: ${newProjectColor}, name: ${newProjectName}`}>foo blue</option>
+                            <Form.Control as='select' name='project' onChange={handleChange}>
+                                <option value=''>select an option</option>
+                                <option value='foo blue'>foo blue</option>
                             </Form.Control>
                             <Button type='submit'>    {'\u2714'}</Button>
                         </Form>

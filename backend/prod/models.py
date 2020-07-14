@@ -3,10 +3,11 @@ from django.db import models
 
 # Create your models here.
 class Project(models.Model):
-    color = models.CharField(max_length=120)
+    hex_color = models.CharField(max_length=120, blank = True)
+    color = models.CharField(max_length=120);
 
     def _str_(self):
-        return self.color
+        return self.color, self.hex_color
 
 
 class Task(models.Model):

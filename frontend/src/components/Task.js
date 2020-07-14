@@ -94,7 +94,6 @@ export function Task(props) {
         } else if (e.target.value === '\u0965') { //pause
             let interval = clearInterval(time[task_id].timerInterval);
             console.log(interval);
-            //save time progress to db; write to db first so can ensure post/put correctness
             saveValues(interval)
             dispatch(pause({id: task_id, inProgress: false, timerInterval: interval}));
 
@@ -106,8 +105,7 @@ export function Task(props) {
             writeCompleted(task_id, true);
         } else { // pressed tasked
             console.log('in else');
-        //  1.   mark task as not completed 2. update db
-            dispatch(updateCompleted({id: task_id, completed: false }))
+            dispatch(updateCompleted({id: task_id, completed: !done }))
             writeCompleted(task_id, !done);
         }
     }

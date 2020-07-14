@@ -5,7 +5,7 @@ from .models import Project
 
 # Register your models here.
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'color')
+    list_display = ('id', 'color', 'hex_color')
 
 
 class TaskAdmin(admin.ModelAdmin):

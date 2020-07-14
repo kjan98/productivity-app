@@ -5,7 +5,7 @@ from .models import Project
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'color')
+        fields = ('id', 'color', 'hex_color')
 
 
 
