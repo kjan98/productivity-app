@@ -8,11 +8,11 @@ from django.db import models
 #     def _str_(self):
 #         return self.color
 
-# class Project(models.Model):
-#     color = models.CharField(max_length=120)
-#
-#     def _str_(self):
-#         return self.color
+class Project(models.Model):
+    color = models.CharField(max_length=120)
+
+    def _str_(self):
+        return self.color
 
 
 class Task(models.Model):

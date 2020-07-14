@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import Task, Time, Current, Archive  # , Project
-# from .models import Project
+from .models import Task, Time, Current, Archive
+from .models import Project
 
 
-# class ProjectSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Project
-#         fields = ('id', 'color')
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ('id', 'color')
 
 
 class TaskSerializer(serializers.ModelSerializer):
