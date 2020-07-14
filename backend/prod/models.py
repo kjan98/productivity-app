@@ -13,7 +13,7 @@ class Task(models.Model):
     task = models.CharField(max_length=120)
     completed = models.BooleanField(default=False)
     projectName = models.CharField(max_length=120, blank=True)
-    project_id = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_color')
+    projectColor = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_color')
 
     def _str_(self):
         return self.task

@@ -7,8 +7,12 @@ const todoSlice = createSlice({
         data: [],
         // inProgress: Set(),
         time: {},
+        colors: []
     },
     reducers: {
+        loadColors: (state, action) => {
+            state.colors = action.payload;
+        },
         load: (state, action) => {
             state.data = action.payload
         },
@@ -83,10 +87,11 @@ const todoSlice = createSlice({
 })
 
 const {actions, reducer} = todoSlice
-export const {load, add, clear, start, pause, stop, update, loadTime} = actions
+export const {load, add, clear, start, pause, stop, update, loadTime, loadColors} = actions
 export const allData = state => state.todos.data;
 export const selectInProgress = state => state.todos.inProgress;
 export const selectCompleted = state => state.todos.completed;
 export const selectTime = state => state.todos.time;
+export const selectColors = state => state.todos.colors;
 // console.log(state.todos)
 export default todoSlice.reducer

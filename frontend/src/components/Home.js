@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import moment from 'moment';
 import axios from 'axios';
-import {add, load, clear, allData, loadTime, selectTime} from "../slices/todoSlice"
+import {add, load, clear, allData, loadTime, selectTime, selectColors, loadColors} from "../slices/todoSlice"
 import Task from "./Task";
 import {selectCount} from "../features/counter/counterSlice";
-import {TASK_URL, TIME_URL, CURRENT_URL} from "../constants"
+import {TASK_URL, TIME_URL, CURRENT_URL, PROJECT_URL} from "../constants"
 import {Modal, Button, Form} from 'react-bootstrap'
 import Calendar from 'react-calendar'
 
@@ -17,6 +17,7 @@ function Home() {
     const data = useSelector(allData);
     const dispatch = useDispatch();
     const time = useSelector(selectTime);
+    const colors = useSelector(selectColors);
 
     const [calendarAppear, setCalendarAppear] = useState(false);
     const [newTask, setNewTask] = useState("");
@@ -25,12 +26,50 @@ function Home() {
 
     function loadData() {
         return dispatch => {
-            axios.get(TASK_URL)
-                .then(res => {
+            axios.all([
+                axios.get(TASK_URL),
+                axios.get(PROJECT_URL)
+            ])
+                .then(axios.spread((task_res, color_res) => {
+                    let combined = [];
+                    task_res.data.forEach(d => {
+                        let t = {...d}
+                        t['projectColor'] = color_res.data[t.projectColor-1].color;
+                        combined.push(t);
+                    })
+                    dispatch(load(combined))
+                }))
+                .catch(err => {console.log('failed loadData'); console.log(err)})
+
+            // axios.get(TASK_URL)
+            //     .then(task_res => {
                     // console.log('loaddata');
-                    dispatch(load(res.data))
-                })
-                .catch(err => console.log(err));
+                    // axios.get(PROJECT_URL)
+                    //     .then(color_res => {
+                    //         let tmp = [...task_res.data];
+                    //         console.log(tmp);
+                    //         console.log('in second axios get');
+                    //         console.log(color_res.data);
+                    //         const newArr = tmp.map(d => {
+                    //             let t = {...d};
+                    //             // console.log(color_res.data[t.projectColor-1].color);
+                    //             d['projectColor'] = color_res.data[d.projectColor-1].color;
+                    //             // console.log(t)
+                    //
+                    //         })
+                    //         console.log(newArr);
+                    //
+                    //         // tmp.forEach(d => {...d, d.projectColor = color_res.data[d.projectColor-1])};
+                    //     })
+            //         dispatch(load(task_res.data))
+            //     })
+            //     .catch(err => console.log(err));
+            //
+            // axios.get(PROJECT_URL)
+            //     .then(res => {
+            //         dispatch(loadColors(res.data.map(d => d.color)));
+            //     })
+            //     .catch( err => {console.log('failed in grabbing colors'); console.log(err)})
         }
     }
 
