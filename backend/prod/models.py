@@ -2,13 +2,20 @@ from django.db import models
 
 
 # Create your models here.
-# class Project(models.Model)
+class Project(models.Model):
+    color = models.CharField(max_length=120)
+
+    def _str_(self):
+        return self.color
 
 
 class Task(models.Model):
     task = models.CharField(max_length=120)
     completed = models.BooleanField(default=False)
-    project = models.CharField(max_length=120)
+    projectName = models.CharField(max_length=120, blank=True)
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, blank=True, null=True)
+
+    # project = models.CharField(max_length=120)
 
     def _str_(self):
         return self.task
