@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {selectInProgress, selectTime, selectCompleted, start, pause, stop, update, loadTime} from "../slices/todoSlice";
+import {selectInProgress, selectTime, selectCompleted, start, pause, stop, update, loadTime, updateCompleted} from "../slices/todoSlice";
 import {TASK_URL, TIME_URL} from "../constants";
 import {Button} from "react-bootstrap";
 import todos from '../styles/Task.css'
@@ -48,7 +48,7 @@ export function Task(props) {
             'timerStart': time[task_id].timerStart,
             'timerTime': time[task_id].timerTime
         }
-        console.log(action);
+        // console.log(action);
         axios.put(TIME_URL + task_id + '/', action)
             .then((response) => {
                 console.log('success for save values');
@@ -72,6 +72,7 @@ export function Task(props) {
     };
 
     const toggle = (e) => {
+        console.log(e.target.value);
         if (e.target.value === '\u25B6') { // play
             let timerSpecs;
             if (time.hasOwnProperty(task_id)) {
@@ -87,21 +88,28 @@ export function Task(props) {
                 timerTime: timerSpecs.timerTime,
                 timerStart: Date.now() - timerSpecs.timerTime,
                 inProgress: true,
-                ttimer: timer
+                timerInterval: timer,
+                completed: false
             }));
             writeCompleted(task_id, false);
 
         } else if (e.target.value === '\u0965') { //pause
-            let interval = clearInterval(time[task_id].ttimer);
+            let interval = clearInterval(time[task_id].timerInterval);
+            console.log(interval);
             //save time progress to db; write to db first so can ensure post/put correctness
             saveValues(interval)
-            dispatch(pause({id: task_id, inProgress: false, ttimer: interval}));
+            dispatch(pause({id: task_id, inProgress: false, timerInterval: interval}));
 
-        } else { //stop
-            let interval = clearInterval(time[task_id].ttimer);
+        } else if (e.target.value === '\u25A0') { //stop
+            console.log('in stop');
+            let interval = clearInterval(time[task_id].timerInterval);
             saveValues(interval);
-            dispatch(stop({id: task_id, inProgress: false, ttimer: interval}));
+            dispatch(stop({id: task_id, inProgress: false, timerInterval: interval, completed:true}));
             writeCompleted(task_id, true);
+        } else { // pressed tasked
+            console.log('in else');
+        //  1.   mark task as not completed 2. update db
+            dispatch(updateCompleted({id: task_id, completed: false }))
         }
     }
 
@@ -132,7 +140,7 @@ export function Task(props) {
 
             <span className='time_elapsed'>{countdown_time}</span>
             <Button variant='outline-secondary' value={time_option} onClick={toggle}>{time_option}</Button>
-            <Button variant='outline-secondary' value='stop' onClick={toggle}>{'\u25A0'}</Button>
+            <Button variant='outline-secondary' value={'\u25A0'} onClick={toggle}>{'\u25A0'}</Button>
 
         </div>
     )

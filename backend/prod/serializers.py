@@ -17,7 +17,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class TimeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Time
-        fields = ('id', 'task_id', 'timerStart', 'timerTime', 'inProgress', 'timerTimer')
+        fields = ('id', 'task_id', 'timerStart', 'timerTime', 'inProgress', 'timerInterval')
 
 
 class CurrentSerializer(serializers.ModelSerializer):

@@ -1,11 +1,10 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {Set} from 'immutable';
+import {updateCompletedAttribute, haltTimer} from "./reducerUtils";
 
 const todoSlice = createSlice({
     name: 'todos',
     initialState: {
         data: [],
-        // inProgress: Set(),
         time: {},
         colors: []
     },
@@ -23,7 +22,6 @@ const todoSlice = createSlice({
             state.data = []
         },
         loadTime: (state, action) => {
-            // console.log('here');
             let d = {}
             action.payload.forEach(x => {
                 let t = {};
@@ -37,16 +35,14 @@ const todoSlice = createSlice({
 
         },
         start: (state, action) => {
-            let tmp = [...state.data];
-            let idx = state.data.findIndex(el => el.id === action.payload.id);
-            tmp[idx] = {...tmp[idx], completed: false}
-            state.data = tmp;
+            updateCompletedAttribute(state, action);
+
             let d = {};
             let t = {};
             t['timerStart'] = action.payload.timerStart;
             t['timerTime'] = action.payload.timerTime;
             t['inProgress'] = action.payload.inProgress;
-            t['ttimer'] = action.payload.ttimer;
+            t['timerInterval'] = action.payload.timerInterval;
             d[action.payload.id] = t;
             state.time = {...state.time, ...d}
 
@@ -55,39 +51,24 @@ const todoSlice = createSlice({
             let t = {...state.time[action.payload.id]};
             let d = {};
             t['timerTime'] = action.payload.val;
-            // t['ttimer'] = action.payload.ttimer;
             d[action.payload.id] = t;
             state.time = {...state.time, ...d};
         },
         pause: (state, action) => {
-            // console.log("in pause");
-            let d = {}
-            let t = {...state.time[action.payload.id]}
-            t['inProgress'] = action.payload.inProgress;
-            t['timerTimer'] = 0;
-            t['ttimer'] = action.payload.ttimer;
-            d[action.payload.id] = t;
-            state.time = {...state.time, ...d};
-            // state.inProgress = Set([...state.inProgress.delete(action.payload.id)]);
+            haltTimer(state, action);
         },
         stop: (state, action) => {
-            let tmp = [...state.data];
-            let idx = state.data.findIndex(el => el.id === action.payload.id);
-            tmp[idx] = {...tmp[idx], completed: true}
-            state.data = tmp;
-            let d = {};
-            let t = {...state.time[action.payload.id]};
-            t['inProgress'] = action.payload.inProgress;
-            t['ttimer'] = action.payload.ttimer;
-            d[action.payload.id] = t;
-            state.time = {...state.time, ...d};
-            // state.inProgress = Set([...state.inProgress.delete(action.payload.id)]);
-        }
+            updateCompletedAttribute(state, action);
+            haltTimer(state, action);
+        },
+        updateCompleted: (state, action) => {
+            updateCompletedAttribute(state, action);
+}
     }
 })
 
 const {actions, reducer} = todoSlice
-export const {load, add, clear, start, pause, stop, update, loadTime, loadColors} = actions
+export const {load, add, clear, start, pause, stop, update, loadTime, loadColors, updateCompleted} = actions
 export const allData = state => state.todos.data;
 export const selectInProgress = state => state.todos.inProgress;
 export const selectCompleted = state => state.todos.completed;

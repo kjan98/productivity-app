@@ -14,7 +14,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 class TimeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'task_id', 'timerStart', 'timerTime', 'inProgress', 'timerTimer')
+    list_display = ('id', 'task_id', 'timerStart', 'timerTime', 'inProgress', 'timerInterval')
 
 
 class CurrentAdmin(admin.ModelAdmin):
