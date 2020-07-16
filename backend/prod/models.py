@@ -39,7 +39,7 @@ class Time(models.Model):
 
 
 class Current(models.Model):
-    foo = models.CharField(default='foo', max_length=120)
+    # foo = models.CharField(default='foo', max_length=120)
     tasks = models.ForeignKey(Task, null=True, blank=True, on_delete=models.CASCADE,  related_name='tasks')
 
     def _str_(self):

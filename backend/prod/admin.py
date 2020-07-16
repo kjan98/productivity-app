@@ -21,7 +21,7 @@ class TimeAdmin(admin.ModelAdmin):
 
 
 class CurrentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'foo', 'tasks')
+    list_display = ('id', 'tasks')
 
 
 class ArchiveAdmin(admin.ModelAdmin):

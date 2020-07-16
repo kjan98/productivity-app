@@ -16,6 +16,15 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = ('id', 'name', 'project_color')
 
+    def to_representation(self, instance):
+        data = super(ProjectSerializer, self).to_representation(instance)
+        project_color = data.pop('project_color')
+        for key, val in project_color.items():
+            if key == 'id':
+                key = 'color_id'
+            data.update({key: val})
+        return data
+
 
 class TaskSerializer(serializers.ModelSerializer):
     project_info = ProjectSerializer()
@@ -36,7 +45,7 @@ class CurrentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Current
-        fields = ('id', 'foo', 'tasks')
+        fields = ('id', 'tasks')
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
