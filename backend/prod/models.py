@@ -12,13 +12,16 @@ class Color(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=120, blank=True)
-    color_id = models.ForeignKey(Color, on_delete=models.CASCADE, null=True)
+    project_color = models.ForeignKey(Color,  null=True,  on_delete=models.CASCADE, related_name='project_color')
+
+    def _str_(self):
+        return self.name
 
 
 class Task(models.Model):
     task = models.CharField(max_length=120)
     completed = models.BooleanField(default=False)
-    project_id = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_info')
+    project_info = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_info')
 
     def _str_(self):
         return self.task
@@ -36,14 +39,15 @@ class Time(models.Model):
 
 
 class Current(models.Model):
-    task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    foo = models.CharField(default='foo', max_length=120)
+    tasks = models.ForeignKey(Task, null=True, blank=True, on_delete=models.CASCADE,  related_name='tasks')
 
     def _str_(self):
-        return self.task_id
+        return self.tasks
 
 
 class Archive(models.Model):
-    task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    task_id = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
 
     def _str_(self):
         return self.task_id

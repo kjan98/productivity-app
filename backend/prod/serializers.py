@@ -2,11 +2,6 @@ from rest_framework import serializers
 from .models import Task, Time, Current, Archive
 from .models import Project, Color
 
-class ProjectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Project
-        fields = ('id', 'name', 'color_id')
-
 
 class ColorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,11 +9,21 @@ class ColorSerializer(serializers.ModelSerializer):
         fields = ('id', 'color', 'hex_color')
 
 
+class ProjectSerializer(serializers.ModelSerializer):
+    project_color = ColorSerializer()
+
+    class Meta:
+        model = Project
+        fields = ('id', 'name', 'project_color')
+
 
 class TaskSerializer(serializers.ModelSerializer):
+    project_info = ProjectSerializer()
+
     class Meta:
         model = Task
-        fields = ('id', 'task', 'completed', 'project_id')
+        fields = ('id', 'task', 'completed', 'project_info')
+
 
 class TimeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,9 +32,11 @@ class TimeSerializer(serializers.ModelSerializer):
 
 
 class CurrentSerializer(serializers.ModelSerializer):
+    tasks = TaskSerializer()
+
     class Meta:
         model = Current
-        fields = ('id', 'task_id')
+        fields = ('id', 'foo', 'tasks')
 
 
 class ArchiveSerializer(serializers.ModelSerializer):
