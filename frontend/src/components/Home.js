@@ -5,7 +5,7 @@ import axios from 'axios';
 import {add, load, clear, allData, loadTime, selectTime, selectColors, loadColors} from "../slices/todoSlice"
 import Task from "./Task";
 import {selectCount} from "../features/counter/counterSlice";
-import {TASK_URL, TIME_URL, CURRENT_URL, PROJECT_URL} from "../constants"
+import {TASK_URL, TIME_URL, CURRENT_URL, PROJECT_URL, COLOR_URL} from "../constants"
 import {Modal, Button, Form} from 'react-bootstrap'
 import Calendar from 'react-calendar'
 
@@ -24,28 +24,42 @@ function Home() {
     const [newProjectName, setNewProjectName] = useState("");
     const [newProjectColor, setNewProjectColor] = useState("");
 
+    const build_dict = (axios_res, res) => {
+        // console.log(axios_res);
+        axios_res.forEach(x => {
+            let tmp = {};
+            let keys = Object.keys(x);
+            // console.log(keys);
+            keys.forEach(k => {
+                // console.log(k);
+                // console.log(x[k]);
+                // console.log(x.k);
+                tmp[k] = x[k]
+            });
+            res[x.id] = tmp;
+        });
+        return res
+    }
+
     function loadData() {
         return dispatch => {
             axios.all([
                 axios.get(TASK_URL),
-                axios.get(PROJECT_URL)
+                axios.get(PROJECT_URL),
+                axios.get(COLOR_URL),
+
             ])
-                .then(axios.spread((task_res, color_res) => {
+                .then(axios.spread((task_res, project_res, color_res) => {
                     let combined = [];
-                    let colors = {}
-                    color_res.data.forEach(x => {
-                        let colors_tmp = {};
-                        colors_tmp['color']  = x.color;
-                        colors_tmp['hex_color'] = x.hex_color;
-                        colors[x.id] = colors_tmp;
-                    });
+                    let colors = build_dict(color_res.data, {});
+                    let project = build_dict(project_res.data, {});
                     task_res.data.forEach(d => {
                         let t = {...d}
-                        t['projectColor'] = colors[t.project_id].hex_color;
+                        t['projectName'] = project[t.project_id].name;
+                        t['projectColor'] = colors[project[t.project_id].color_id].hex_color;
                         combined.push(t);
                     })
-                    dispatch(load(combined));
-                    dispatch(loadColors(colors));
+                    dispatch(load({"data":combined, "colors": colors, "projects":project}));
                 }))
                 .catch(err => {
                     console.log('failed loadData');
@@ -75,8 +89,6 @@ function Home() {
     }
 
     const handleChange = (e) => {
-        // console.log('')
-        // alert(e.target.value);
         if (e.target.name === 'newTask') {
             setNewTask(e.target.value);
         } else if (e.target.name === 'project') {
@@ -96,6 +108,7 @@ function Home() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //TODO/FIXME: update projectName/projectColor to be project_id only
         let action = {
             'task': newTask,
             'completed': false,

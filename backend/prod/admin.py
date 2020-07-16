@@ -1,16 +1,19 @@
 from django.contrib import admin
-from .models import Task, Time, Current, Archive#, Project
-from .models import Project
+from .models import Task, Time, Current, Archive  # , Project
+from .models import Project, Color
 
 
 # Register your models here.
-class ProjectAdmin(admin.ModelAdmin):
+class ColorAdmin(admin.ModelAdmin):
     list_display = ('id', 'color', 'hex_color')
 
 
-class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'task', 'completed', 'projectName', 'project_id')
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'color_id')
 
+
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('id', 'task', 'completed', 'project_id')
 
 
 class TimeAdmin(admin.ModelAdmin):

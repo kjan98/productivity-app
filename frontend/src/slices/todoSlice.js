@@ -6,14 +6,17 @@ const todoSlice = createSlice({
     initialState: {
         data: [],
         time: {},
-        colors: {}
+        colors: {},
+        projects: {}
     },
     reducers: {
-        loadColors: (state, action) => {
-            state.colors = action.payload;
-        },
+        // loadColors: (state, action) => {
+        //     state.colors = action.payload;
+        // },
         load: (state, action) => {
-            state.data = action.payload;
+            state.data = action.payload.data;
+            state.colors = action.payload.colors;
+            state.projects = action.payload.projects;
         },
         add: (state, action) => {
             state.data = [...state.data, action.payload];

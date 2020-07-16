@@ -2,14 +2,14 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from .serializers import TaskSerializer, TimeSerializer, CurrentSerializer, ArchiveSerializer
 from .models import Task, Time, Current, Archive
-from .serializers import ProjectSerializer
-from .models import Project
+from .serializers import ProjectSerializer, ColorSerializer
+from .models import Project, Color
 
 
 # Create your views here.
-# class ProjectView(viewsets.ModelViewSet):
-#     serializer_class = ProjectSerializer
-#     queryset = Project.objects.all()
+class ColorView(viewsets.ModelViewSet):
+    serializer_class = ColorSerializer
+    queryset = Color.objects.all()
 
 class ProjectView(viewsets.ModelViewSet):
     queryset = Project.objects.all()

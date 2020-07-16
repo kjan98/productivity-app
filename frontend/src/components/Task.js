@@ -1,7 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {selectInProgress, selectTime, selectCompleted, start, pause, stop, update, loadTime, updateCompleted} from "../slices/todoSlice";
+import {
+    selectInProgress,
+    selectTime,
+    selectCompleted,
+    start,
+    pause,
+    stop,
+    update,
+    loadTime,
+    updateCompleted
+} from "../slices/todoSlice";
 import {TASK_URL, TIME_URL} from "../constants";
 import {Button} from "react-bootstrap";
 import todos from '../styles/Task.css'
@@ -13,8 +23,8 @@ export function Task(props) {
     const task_id = props.task_object.id;
     const task = props.task_object.task;
     const done = props.task_object.completed;
-    const projectName = props.task_object.projectName;
     const project_id = props.task_object.project_id;
+    const projectName = props.task_object.projectName;
     const projectColor = props.task_object.projectColor;
 
     const writeCompleted = (task_id, val) => {
@@ -22,7 +32,7 @@ export function Task(props) {
         let action = {
             'task': task,
             'completed': val,
-            'projectName': projectName,
+            // 'projectName': projectName,
             'project_id': project_id
         };
         console.log(action);
@@ -57,7 +67,10 @@ export function Task(props) {
                     console.log('in catch, error 404');
                     // console.log(action);
                     axios.post(TIME_URL, action)
-                        .then(response => {console.log('success in 404 reroute'); console.log(response)})
+                        .then(response => {
+                            console.log('success in 404 reroute');
+                            console.log(response)
+                        })
                         .catch(err2 => {
                             console.log('error in 404 reroute');
                             console.log(err2)
@@ -101,11 +114,11 @@ export function Task(props) {
             console.log('in stop');
             let interval = clearInterval(time[task_id].timerInterval);
             saveValues(interval);
-            dispatch(stop({id: task_id, inProgress: false, timerInterval: interval, completed:true}));
+            dispatch(stop({id: task_id, inProgress: false, timerInterval: interval, completed: true}));
             writeCompleted(task_id, true);
         } else { // pressed tasked
             console.log('in else');
-            dispatch(updateCompleted({id: task_id, completed: !done }))
+            dispatch(updateCompleted({id: task_id, completed: !done}))
             writeCompleted(task_id, !done);
         }
     }
