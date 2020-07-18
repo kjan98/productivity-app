@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import moment from 'moment';
 import axios from 'axios';
-import {add, load, clear, allData, loadTime, selectTime, selectColors, loadColors} from "../slices/todoSlice"
+import {add, load, clear, currentData, loadTime, selectTime, selectColors, loadColors} from "../slices/todoSlice"
 import Task from "./Task";
 import {selectCount} from "../features/counter/counterSlice";
 import {TASK_URL, TIME_URL, CURRENT_URL, PROJECT_URL, COLOR_URL} from "../constants"
@@ -14,7 +14,7 @@ import '../styles/Home.css';
 import 'react-calendar/dist/Calendar.css';
 
 function Home() {
-    const data = useSelector(allData);
+    const current_data = useSelector(currentData);
     const dispatch = useDispatch();
     const time = useSelector(selectTime);
     const colors = useSelector(selectColors);
@@ -25,15 +25,10 @@ function Home() {
     const [newProjectColor, setNewProjectColor] = useState("");
 
     const build_dict = (axios_res, res) => {
-        // console.log(axios_res);
         axios_res.forEach(x => {
             let tmp = {};
             let keys = Object.keys(x);
-            // console.log(keys);
             keys.forEach(k => {
-                // console.log(k);
-                // console.log(x[k]);
-                // console.log(x.k);
                 tmp[k] = x[k]
             });
             res[x.id] = tmp;
@@ -42,24 +37,18 @@ function Home() {
     }
 
     function loadData() {
+        console.log("here");
         return dispatch => {
             axios.all([
-                axios.get(TASK_URL),
+                axios.get(CURRENT_URL),
                 axios.get(PROJECT_URL),
                 axios.get(COLOR_URL),
 
             ])
                 .then(axios.spread((task_res, project_res, color_res) => {
-                    let combined = [];
                     let colors = build_dict(color_res.data, {});
                     let project = build_dict(project_res.data, {});
-                    task_res.data.forEach(d => {
-                        let t = {...d}
-                        t['projectName'] = project[t.project_id].name;
-                        t['projectColor'] = colors[project[t.project_id].color_id].hex_color;
-                        combined.push(t);
-                    })
-                    dispatch(load({"data":combined, "colors": colors, "projects":project}));
+                    dispatch(load({"current_data":task_res.data, "colors": colors, "projects":project}));
                 }))
                 .catch(err => {
                     console.log('failed loadData');
@@ -145,7 +134,7 @@ function Home() {
             </div>
             <div className="container-fluid d-flex flex-row justify-content-between">
                 <div className="post_it_container justify-content-end flex-wrap">
-                    <div className='post_it'>{data.map(x => <Task key={x.id} task_object={x}/>)}
+                    <div className='post_it'>{current_data.map(x => <Task key={x.id} task_object={x}/>)}
                         <Form inline onSubmit={handleSubmit}>
                             <Form.Control type='text' name='newTask' placeholder='New Task'
                                           onChange={handleChange} value={newTask}></Form.Control>

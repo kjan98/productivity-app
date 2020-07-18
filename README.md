@@ -19,3 +19,4 @@ backlog:
  2. want to increase granularity of tasks )
  - higher order reducer?
  - server-side validation
+ - serialzed on server side

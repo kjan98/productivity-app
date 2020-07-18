@@ -1,9 +1,15 @@
 export function updateCompletedAttribute(state, action) {
     console.log('in update completed');
-    let tmp = [...state.data];
-    let idx = state.data.findIndex(el => el.id === action.payload.id);
-    tmp[idx] = {...tmp[idx], completed: action.payload.completed}
-    state.data = tmp;
+    let tmp = [...state.current_data];
+    let idx = state.current_data.findIndex(el => el.tasks.id === action.payload.id);
+    let tmp_completed = {...tmp[idx]};
+    // let task_tmp = {...tmp_completed.tasks}
+
+    tmp_completed.tasks['completed'] = action.payload.completed;
+    // tmp[idx] = {...tmp[idx], completed: action.payload.completed}
+    tmp[idx] = {...tmp_completed}
+
+    state.current_data = tmp;
 }
 
 export function haltTimer(state, action) {

@@ -12,7 +12,7 @@ import {
     loadTime,
     updateCompleted
 } from "../slices/todoSlice";
-import {TASK_URL, TIME_URL} from "../constants";
+import {TASK_URL, TIME_URL, CURRENT_URL} from "../constants";
 import {Button} from "react-bootstrap";
 import todos from '../styles/Task.css'
 
@@ -20,23 +20,38 @@ export function Task(props) {
     const time = useSelector(selectTime);
     const dispatch = useDispatch();
 
-    const task_id = props.task_object.id;
-    const task = props.task_object.task;
-    const done = props.task_object.completed;
-    const project_id = props.task_object.project_id;
-    const projectName = props.task_object.projectName;
-    const projectColor = props.task_object.projectColor;
+    const current_id = props.task_object.id;
+    const task_id = props.task_object.tasks.id;
+    const task = props.task_object.tasks.task;
+    const done = props.task_object.tasks.completed;
+    const project_info = props.task_object.tasks.project_info;
+    const projectName = project_info.name;
+    const projectColor = project_info.project_color.hex_color;
+    // debugger;
 
-    const writeCompleted = (task_id, val) => {
+    const writeCompleted = (current_id, val) => {
         console.log('write completed');
+        let project_color_tmp = {
+            'id': project_info.project_color.id,
+            'color': project_info.project_color.color,
+            'hex_color': projectColor
+        }
+        let project_info_tmp = {
+            'id': project_info.id,
+            'name': projectName,
+            'project_color': project_color_tmp
+        }
+        let tasks_tmp = {
+            "id": task_id,
+            "task": task,
+            "completed": val,
+            "project_info": project_info_tmp
+        }
         let action = {
-            'task': task,
-            'completed': val,
-            // 'projectName': projectName,
-            'project_id': project_id
-        };
-        console.log(action);
-        axios.put(TASK_URL + task_id + '/', action)
+            'id': current_id,
+            'tasks': tasks_tmp
+        }
+        axios.put(CURRENT_URL + current_id + '/', action)
             .then(response => {
                 console.log('success for write ocmpleted');
                 console.log(response)
@@ -44,6 +59,8 @@ export function Task(props) {
             .catch(err => {
                 console.log('fail');
                 console.log(err);
+                // console.log(err.get_full_details())
+                console.log(action);
                 console.log(val);
             })
     }
@@ -65,7 +82,6 @@ export function Task(props) {
             .catch(err => {
                 if (err.response.status === 404) {
                     console.log('in catch, error 404');
-                    // console.log(action);
                     axios.post(TIME_URL, action)
                         .then(response => {
                             console.log('success in 404 reroute');
@@ -102,7 +118,7 @@ export function Task(props) {
                 timerInterval: timer,
                 completed: false
             }));
-            writeCompleted(task_id, false);
+            writeCompleted(current_id, false);
 
         } else if (e.target.value === '\u0965') { //pause
             let interval = clearInterval(time[task_id].timerInterval);
@@ -115,11 +131,11 @@ export function Task(props) {
             let interval = clearInterval(time[task_id].timerInterval);
             saveValues(interval);
             dispatch(stop({id: task_id, inProgress: false, timerInterval: interval, completed: true}));
-            writeCompleted(task_id, true);
+            writeCompleted(current_id, true);
         } else { // pressed tasked
             console.log('in else');
             dispatch(updateCompleted({id: task_id, completed: !done}))
-            writeCompleted(task_id, !done);
+            writeCompleted(current_id, !done);
         }
     }
 

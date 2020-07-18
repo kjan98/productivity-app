@@ -23,6 +23,9 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     project_info = models.ForeignKey(Project, null=True, on_delete=models.CASCADE, related_name='project_info')
 
+    def items(self):
+        return [('task', self.task), ('completed', self.completed), ('project_info', self.project_info)]
+
     def _str_(self):
         return self.task
 
@@ -39,7 +42,6 @@ class Time(models.Model):
 
 
 class Current(models.Model):
-    # foo = models.CharField(default='foo', max_length=120)
     tasks = models.ForeignKey(Task, null=True, blank=True, on_delete=models.CASCADE,  related_name='tasks')
 
     def _str_(self):

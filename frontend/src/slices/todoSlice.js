@@ -4,25 +4,22 @@ import {updateCompletedAttribute, haltTimer} from "./reducerUtils";
 const todoSlice = createSlice({
     name: 'todos',
     initialState: {
-        data: [],
+        current_data: [],
         time: {},
         colors: {},
         projects: {}
     },
     reducers: {
-        // loadColors: (state, action) => {
-        //     state.colors = action.payload;
-        // },
         load: (state, action) => {
-            state.data = action.payload.data;
+            state.current_data = action.payload.current_data;
             state.colors = action.payload.colors;
             state.projects = action.payload.projects;
         },
         add: (state, action) => {
-            state.data = [...state.data, action.payload];
+            state.current_data = [...state.current_data, action.payload];
         },
         clear: (state) => {
-            state.data = [];
+            state.current_data = [];
         },
         loadTime: (state, action) => {
             let d = {}
@@ -72,7 +69,7 @@ const todoSlice = createSlice({
 
 const {actions, reducer} = todoSlice
 export const {load, add, clear, start, pause, stop, update, loadTime, loadColors, updateCompleted} = actions
-export const allData = state => state.todos.data;
+export const currentData = state => state.todos.current_data;
 export const selectInProgress = state => state.todos.inProgress;
 export const selectCompleted = state => state.todos.completed;
 export const selectTime = state => state.todos.time;
