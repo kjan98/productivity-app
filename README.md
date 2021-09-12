@@ -1,6 +1,8 @@
 # productivity-app
 a productivity app to sharpen django and react skills
 
+## changes for comsw 4156 adv swe
+
 credits:
 - calendar: https://github.com/rajeshpillai/youtube-react-calendar/blob/master/src/Components/Calendar/index.js
 - setting up django backend with react frontend: https://scotch.io/tutorials/build-a-to-do-application-using-django-and-react
