@@ -14,6 +14,7 @@ import '../styles/Home.css';
 import 'react-calendar/dist/Calendar.css';
 
 function Home() {
+    // a change in the actual code in case change in readme was not sufficient
     const current_data = useSelector(currentData);
     const dispatch = useDispatch();
     const time = useSelector(selectTime);
